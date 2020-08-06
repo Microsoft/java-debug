@@ -1,8 +1,15 @@
 language: java
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    jdk: openjdk11
+    env:
+      - JDK_HOME=~/openjdk11 # force launching JLS using JDK11
+  - os: osx
+    osx_image: xcode10.1
+    jdk: oraclejdk11
 
 script: 
   - ./mvnw clean verify

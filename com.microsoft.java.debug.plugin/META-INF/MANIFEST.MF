@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Java Debug Server Plugin
 Bundle-SymbolicName: com.microsoft.java.debug.plugin;singleton:=true
 Bundle-Version: 0.27.1
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: com.microsoft.java.debug.plugin.internal.JavaDebuggerServerPlugin
 Bundle-Vendor: Microsoft

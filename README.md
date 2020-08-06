@@ -26,6 +26,9 @@ The Java Debug Server is the bridge between VSCode and JVM. The implementation i
 
 ## Installation
 
+### Requirements
+- JDK (version 11 or later)
+
 ### Windows:
 ```
 mvnw.cmd clean install
