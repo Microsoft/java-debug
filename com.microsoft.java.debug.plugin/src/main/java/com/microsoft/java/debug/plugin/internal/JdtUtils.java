@@ -213,10 +213,10 @@ public class JdtUtils {
         projects.stream().distinct().map(project -> JdtUtils.getJavaProject(project))
             .filter(javaProject -> javaProject != null && javaProject.exists())
             .forEach(javaProject -> {
-                // Add source containers associated with the project's runtime classpath entries.
-                containers.addAll(Arrays.asList(getSourceContainers(javaProject, calculated)));
                 // Add source containers associated with the project's source folders.
                 containers.add(new JavaProjectSourceContainer(javaProject));
+                // Add source containers associated with the project's runtime classpath entries.
+                containers.addAll(Arrays.asList(getSourceContainers(javaProject, calculated)));
             });
 
         return containers.toArray(new ISourceContainer[0]);
