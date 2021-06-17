@@ -12,8 +12,10 @@
 package com.microsoft.java.debug.plugin.internal;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -33,8 +35,33 @@ public class JavaDebugServer implements IDebugServer {
     private ExecutorService executor = null;
 
     private JavaDebugServer() {
+        int port = 0;
+        InetAddress bindAddr = null;
+        String serverAddress = System.getProperty("com.microsoft.java.debug.serverAddress");
+        if (serverAddress != null) {
+            int portIndex = serverAddress.lastIndexOf(':');
+            if (portIndex == -1) {
+                logger.log(Level.SEVERE, String.format("Malformed server address \"%s\": missing port", serverAddress));
+                return;
+            }
+            try {
+                port = Integer.parseInt(serverAddress.substring(portIndex + 1));
+            } catch (NumberFormatException e) {
+                logger.log(Level.SEVERE, String.format("Malformed server address \"%s\": %s", serverAddress, e.toString()), e);
+                return;
+            }
+
+            if (portIndex > 0) {
+                try {
+                    bindAddr = InetAddress.getByName(serverAddress.substring(0, portIndex));
+                } catch (UnknownHostException e) {
+                    logger.log(Level.SEVERE, String.format("Invalid server address \"%s\": %s", serverAddress, e.toString()), e);
+                    return;
+                }
+            }
+        }
         try {
-            this.serverSocket = new ServerSocket(0, 1);
+            this.serverSocket = new ServerSocket(port, 1, bindAddr);
         } catch (IOException e) {
             logger.log(Level.SEVERE, String.format("Failed to create Java Debug Server: %s", e.toString()), e);
         }
